@@ -12,6 +12,7 @@
   "dependencies": {
     "bootstrap": "^5.3.4",
     "bootstrap-icons": "^1.11.3",
+    "flag-icons": "^7.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

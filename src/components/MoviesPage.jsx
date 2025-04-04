@@ -4,20 +4,17 @@ import { useMoviesContext } from "../contexts/moviesContext";
 
 export default function MoviesPage() {
 
-  //use state variables
-  const [search, setSearch] = useState('');
-
   //logic
-  const { movies, searchText, setSearchText } = useMoviesContext();
+  const { series, movies, searchText, setSearchText, handleSubmit } = useMoviesContext();
 
   //function to handle change of input
   function handleChange(e) {
-    setSearch(e.target.value);
+    setSearchText(e.target.value);
   }
 
   //function to fetch datas
   function handleSearch() {
-    setSearchText(search);
+    handleSubmit();
   }
 
   //template
@@ -35,10 +32,10 @@ export default function MoviesPage() {
             id="movie"
             aria-describedby="movieHelper"
             placeholder="Type your movie here"
-            value={search}
+            value={searchText}
             onChange={handleChange} />
 
-          <button onClick={handleSearch} type="button" className="btn btn-primary">Search</button>
+          <button onClick={handleSearch} type="button" className="btn btn-danger">Search</button>
 
         </div>
 
@@ -48,10 +45,27 @@ export default function MoviesPage() {
               movies.map(movie => (
                 <div key={movie.id} className="card mb-2 p-2">
                   <ul className="m-0 p-0 list-unstyled">
-                    <li>{movie.title}</li>
-                    <li>{movie.original_title}</li>
-                    <li>{movie.original_language}</li>
-                    <li>{movie.vote_average}</li>
+                    <li>{`Titolo: ${movie.title}`}</li>
+                    <li>{`Titolo originale: ${movie.original_title}`}</li>
+                    <li>{`Lingua: `}<span className={`fi fi-${movie.original_language}`}></span></li>
+                    <li>{`Voto: ${movie.vote_average}`}</li>
+                  </ul>
+                </div>
+              ))
+            }
+          </ul>
+        )}
+
+        {(series.length > 0) && (
+          <ul className="p-0">
+            {
+              series.map(serie => (
+                <div key={serie.id} className="card mb-2 p-2">
+                  <ul className="m-0 p-0 list-unstyled">
+                    <li>{`Titolo: ${serie.name}`}</li>
+                    <li>{`Titolo originale: ${serie.original_name}`}</li>
+                    <li>{`Lingua: `}<span className={`fi fi-${serie.original_language}`}></span></li>
+                    <li>{`Voto: ${serie.vote_average}`}</li>
                   </ul>
                 </div>
               ))
