@@ -1,10 +1,17 @@
+//custom hooks import
+import { MoviesProvider } from "./contexts/moviesContext"
 
+//components import
+import MoviesPage from "./components/MoviesPage"
 
 export default function App() {
 
+  //return
   return (
     <>
-      <h1>Boolflix</h1>
+      <MoviesProvider>
+        <MoviesPage></MoviesPage>
+      </MoviesProvider>
     </>
   )
 }
