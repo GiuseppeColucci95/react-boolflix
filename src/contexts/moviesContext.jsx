@@ -1,7 +1,6 @@
 //hooks import from react
 import { createContext, useContext, useEffect, useState } from "react";
 
-
 //creation of the context
 const MoviesContext = createContext();
 
@@ -20,9 +19,10 @@ function MoviesProvider({ children }) {
       .then(res => res.json())
       .then(data => {
         console.log(data);
+        setMovies(data.results);
       })
       .catch(err => console.error(err));
-  }, []);
+  }, [searchText]);
 
   return (
     <MoviesContext.Provider value={{ movies, setMovies, searchText, setSearchText }}>
