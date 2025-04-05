@@ -8,16 +8,18 @@ const MoviesContext = createContext();
 function MoviesProvider({ children }) {
 
   const [searchText, setSearchText] = useState('');
+  const [language, setLanguage] = useState('en-US');
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
 
   //variables to use
   const api_key = import.meta.env.VITE_MOVIE_DB_API_KEY;
-  const base_movies_api_url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${searchText}`;
-  const base_series_api_url = `https://api.themoviedb.org/3/search/tv?api_key=${api_key}&query=${searchText}`;
+  const base_movies_api_url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=${language}&query=${searchText}`;
+  const base_series_api_url = `https://api.themoviedb.org/3/search/tv?api_key=${api_key}&language=${language}&query=${searchText}`;
 
-
+  //function to fetch datas on button click
   function handleSubmit() {
+    console.log(base_movies_api_url);
     //first fetch for movies
     fetch(base_movies_api_url)
       .then(res => res.json())
@@ -27,6 +29,7 @@ function MoviesProvider({ children }) {
       })
       .catch(err => console.error(err));
 
+    console.log(base_series_api_url);
     //second fetch for series
     fetch(base_series_api_url)
       .then(res => res.json())
@@ -34,10 +37,11 @@ function MoviesProvider({ children }) {
         console.log(data);
         setSeries(data.results);
       })
+      .catch(err => console.error(err));
   }
 
   return (
-    <MoviesContext.Provider value={{ movies, series, setMovies, searchText, setSearchText, handleSubmit }}>
+    <MoviesContext.Provider value={{ movies, series, language, setLanguage, searchText, setSearchText, handleSubmit }}>
       {children}
     </MoviesContext.Provider>
   );
