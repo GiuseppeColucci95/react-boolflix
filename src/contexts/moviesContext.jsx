@@ -9,19 +9,25 @@ function MoviesProvider({ children }) {
 
   const [searchText, setSearchText] = useState('');
   const [language, setLanguage] = useState('en-US');
+
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
+
   const [actors, setActors] = useState([]);
   const [genres, setGenres] = useState([]);
-  const [genresList, setGenresList] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState(0);
+
+  const [moviesGenresList, setMoviesGenresList] = useState([]);
+  const [seriesGenresList, setSeriesGenresList] = useState([]);
+
+  const [selectedMoviesGenre, setSelectedMoviesGenre] = useState(0);
+  const [selectedSeriesGenre, setSelectedSeriesGenre] = useState(0);
 
   //variables to use
   const api_key = import.meta.env.VITE_MOVIE_DB_API_KEY;
   const base_movies_api_url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=${language}&query=${searchText}`;
   const base_series_api_url = `https://api.themoviedb.org/3/search/tv?api_key=${api_key}&language=${language}&query=${searchText}`;
 
-  //useEffect for reading genres
+  //useEffect for reading movies genres
   useEffect(() => {
     const options = {
       method: 'GET',
@@ -34,7 +40,15 @@ function MoviesProvider({ children }) {
     fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options)
       .then(res => res.json())
       .then(data => {
-        setGenresList(data.genres);
+        setMoviesGenresList(data.genres);
+        console.log(data.genres);
+      })
+      .catch(err => console.error(err));
+
+    fetch('https://api.themoviedb.org/3/genre/tv/list?language=en', options)
+      .then(res => res.json())
+      .then(data => {
+        setSeriesGenresList(data.genres);
         console.log(data.genres);
       })
       .catch(err => console.error(err));
@@ -43,39 +57,48 @@ function MoviesProvider({ children }) {
   //useEffect for searching when selected genre changes
   useEffect(() => {
     handleSubmit();
-  }, [selectedGenre]);
+  }, [selectedMoviesGenre, selectedSeriesGenre]);
 
   //function to fetch datas on button click
   function handleSubmit() {
-    console.log(base_movies_api_url);
+
     //first fetch for movies
     fetch(base_movies_api_url)
       .then(res => res.json())
       .then(data => {
 
-        if (selectedGenre !== 0) {
+        if (selectedMoviesGenre !== 0) {
 
           const moviesToFilter = data.results;
           const filteredMovies = moviesToFilter.filter(movie => {
-            console.log("ids: ", movie.genre_ids, "id: ", selectedGenre);
-            return movie.genre_ids.includes(selectedGenre);
+            console.log("ids: ", movie.genre_ids, "id: ", selectedMoviesGenre);
+            return movie.genre_ids.includes(selectedMoviesGenre);
           })
           setMovies(filteredMovies);
-          console.log(filteredMovies);
         } else {
           setMovies(data.results);
-          console.log(data.results);
         }
       })
       .catch(err => console.error(err));
 
-    console.log(base_series_api_url);
     //second fetch for series
     fetch(base_series_api_url)
       .then(res => res.json())
       .then(data => {
         console.log(data);
         setSeries(data.results);
+
+        if (selectedSeriesGenre !== 0) {
+
+          const seriesToFilter = data.results;
+          const filteredSeries = seriesToFilter.filter(serie => {
+            console.log("ids: ", serie.genre_ids, "id: ", selectedSeriesGenre);
+            return serie.genre_ids.includes(selectedSeriesGenre);
+          })
+          setSeries(filteredSeries);
+        } else {
+          setSeries(data.results);
+        }
       })
       .catch(err => console.error(err));
   }
@@ -174,7 +197,13 @@ function MoviesProvider({ children }) {
   }
 
   return (
-    <MoviesContext.Provider value={{ movies, series, language, setLanguage, searchText, setSearchText, handleSubmit, actors, genres, getMovieActors, getMovieGenres, getSerieActors, getSerieGenres, genresList, setSelectedGenre }}>
+    <MoviesContext.Provider value={{
+      movies, series, language, setLanguage, searchText,
+      setSearchText, handleSubmit, actors, genres, getMovieActors,
+      getMovieGenres, getSerieActors, getSerieGenres,
+      moviesGenresList, seriesGenresList, setSelectedMoviesGenre, setSelectedSeriesGenre,
+      setActors, setGenres
+    }}>
       {children}
     </MoviesContext.Provider>
   );

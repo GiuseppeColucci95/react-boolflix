@@ -9,7 +9,8 @@ export default function MoviesPage() {
   const { series, movies, language, setLanguage, searchText,
     setSearchText, handleSubmit, actors, genres, getMovieActors,
     getMovieGenres, getSerieActors, getSerieGenres,
-    genresList, setSelectedGenre } = useMoviesContext();
+    moviesGenresList, seriesGenresList, setSelectedMoviesGenre,
+    setSelectedSeriesGenre, setActors, setGenres } = useMoviesContext();
 
   //function to handle change of input
   function handleSearchTextChange(e) {
@@ -55,12 +56,15 @@ export default function MoviesPage() {
     getSerieGenres(id);
   }
 
-  //function to set genre change
-  function handleGenreChange(e) {
-    setSelectedGenre(Number(e.target.value));
-    console.log(e.target.value, Number(e.target.value));
+  //function to set selected movies genre change
+  function handleMoviesGenreChange(e) {
+    setSelectedMoviesGenre(Number(e.target.value));
   }
 
+  //function to set selected series genre change
+  function handleSeriesGenreChange(e) {
+    setSelectedSeriesGenre(Number(e.target.value));
+  }
 
   //template
   return (
@@ -75,7 +79,7 @@ export default function MoviesPage() {
                 name="movie"
                 id="movie"
                 aria-describedby="movieHelper"
-                placeholder="Search your movie here..."
+                placeholder="Search here..."
                 value={searchText}
                 onChange={handleSearchTextChange} />
               <button onClick={handleSearch} type="button" className="btn btn-danger">Search</button>
@@ -100,10 +104,10 @@ export default function MoviesPage() {
 
           <div className="d-flex justify-content-between">
             <h2>Movies</h2>
-            <select onChange={(e) => handleGenreChange(e)} className="mb-3" name="genres" id="genres">
+            <select onChange={(e) => handleMoviesGenreChange(e)} className="my-2 width-15" name="movies_genres" id="movies_genres">
               <option value="0">Select Genre</option>
               {
-                genresList.map(genre => (
+                moviesGenresList.map(genre => (
                   <option key={genre.id} value={genre.id}>{genre.name}</option>
                 ))
               }
@@ -140,10 +144,10 @@ export default function MoviesPage() {
 
           <div className="d-flex justify-content-between">
             <h2>TV Series</h2>
-            <select onChange={(e) => handleGenreChange(e)} className="mb-3" name="genres" id="genres">
+            <select onChange={(e) => handleSeriesGenreChange(e)} className="my-2 width-15" name="genres" id="genres">
               <option value="0">Select Genre</option>
               {
-                genresList.map(genre => (
+                seriesGenresList.map(genre => (
                   <option key={genre.id} value={genre.id}>{genre.name}</option>
                 ))
               }
