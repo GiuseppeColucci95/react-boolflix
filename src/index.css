@@ -23,14 +23,33 @@ body {
 header {
   background-color: var(--bool-header-bg-color);
 
+  #logo_container {
+    padding: 1rem !important;
+  }
+
   #logo {
-    font-weight: 800;
-    font-size: 3rem;
+
+    margin-right: 2rem;
+
+    @media screen and (max-width: 800px) {
+      width: 20%;
+    }
+
+    @media screen and (max-width: 600px) {
+      width: 30%;
+    }
   }
 
   button {
     background-color: var(--bool-main-color) !important;
     color: var(--bool-lightest-color) !important;
+  }
+
+  select {
+
+    @media screen and (max-width: 800px) {
+      display: none !important;
+    }
   }
 }
 

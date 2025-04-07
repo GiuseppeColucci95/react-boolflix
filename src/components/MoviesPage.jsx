@@ -70,7 +70,7 @@ export default function MoviesPage() {
   return (
     <>
       <header>
-        <div className="d-flex justify-content-between align-items-center px-5 py-3">
+        <div id="logo_container" className="d-flex justify-content-between align-items-center px-5 py-3">
           <img id="logo" className="width-15" src={Logo} alt="logo image" />
           <div id="header_right" className="d-flex gap-3">
             <div className="d-flex gap-3">
@@ -102,8 +102,8 @@ export default function MoviesPage() {
       <main className="bg-dark">
         <div className="container py-4">
 
-          <div className="d-flex justify-content-between">
-            <h2>Movies</h2>
+          <div className="d-flex justify-content-between align-items-center">
+            <h1>Movies</h1>
             <select onChange={(e) => handleMoviesGenreChange(e)} className="my-2 width-15" name="movies_genres" id="movies_genres">
               <option value="0">Select Genre</option>
               {
@@ -115,7 +115,7 @@ export default function MoviesPage() {
           </div>
           {
             (movies.length > 0) && (
-              <div className="row row-cols-4 g-3 pb-5">
+              <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5 g-3 pb-5">
                 {
                   movies.map(movie => (
                     <div key={movie.id} className="col">
@@ -142,8 +142,8 @@ export default function MoviesPage() {
             )
           }
 
-          <div className="d-flex justify-content-between">
-            <h2>TV Series</h2>
+          <div className="d-flex justify-content-between align-items-center">
+            <h1>TV Series</h1>
             <select onChange={(e) => handleSeriesGenreChange(e)} className="my-2 width-15" name="genres" id="genres">
               <option value="0">Select Genre</option>
               {
@@ -154,7 +154,7 @@ export default function MoviesPage() {
             </select>
           </div>          {
             (series.length > 0) && (
-              <div className="row row-cols-4 g-3 pb-3">
+              <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5 g-3 pb-5">
                 {
                   series.map(serie => (
                     <div key={serie.id} className="col">

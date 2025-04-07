@@ -85,7 +85,6 @@ function MoviesProvider({ children }) {
     fetch(base_series_api_url)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setSeries(data.results);
 
         if (selectedSeriesGenre !== 0) {
