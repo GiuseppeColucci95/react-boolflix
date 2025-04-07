@@ -6,7 +6,7 @@ import Logo from '../assets/img/boolflix-logo.png';
 export default function MoviesPage() {
 
   //logic
-  const { series, movies, language, setLanguage, searchText, setSearchText, handleSubmit } = useMoviesContext();
+  const { series, movies, language, setLanguage, searchText, setSearchText, handleSubmit, actors, genres, getMovieActors, getMovieGenres, getSerieActors, getSerieGenres } = useMoviesContext();
 
   //function to handle change of input
   function handleSearchTextChange(e) {
@@ -38,6 +38,18 @@ export default function MoviesPage() {
     }
 
     return array;
+  }
+
+  //function to get movie details
+  function handleMovieDetails(id) {
+    getMovieActors(id);
+    getMovieGenres(id);
+  }
+
+  //function to get serie details
+  function handleSerieDetails(id) {
+    getSerieActors(id);
+    getSerieGenres(id);
   }
 
   //template
@@ -76,57 +88,65 @@ export default function MoviesPage() {
       <main className="bg-dark">
         <div className="container py-4">
 
-          <h2>Movies</h2>
-          {(movies.length > 0) && (
-            <div className="row row-cols-4 g-3 pb-5">
-              {
-                movies.map(movie => (
-                  <div key={movie.id} className="col">
-                    <div className="card_container card h-100 border border-0">
-                      <img className="img-fluid h-100" src={`https://image.tmdb.org/t/p/w342${movie.poster_path ? movie.poster_path : '/vFK3Ue8zAXpoWEqncKk5rcGd7RK.jpg'}`} alt="" />
-                      <div className="overlay">
-                        <ul className="list-unstyled">
-                          <li><strong>Titolo: </strong>{movie.title}</li>
-                          <li><strong>Titolo originale: </strong>{movie.original_title}</li>
-                          <li><strong>Lingua: </strong><span className={`fi fi-${movie.original_language}`}></span></li>
-                          <li><strong>Voto: </strong>{getStarsVote(movie.vote_average).map((star, index) => (
-                            <i key={`star-${index}`} className={star}></i>))}
-                          </li>
-                          <li><strong>Overview: </strong>{movie.overview}</li>
-                        </ul>
+          <h2>{movies.length ? ('Movies') : ('')}</h2>
+          {
+            (movies.length > 0) && (
+              <div className="row row-cols-4 g-3 pb-5">
+                {
+                  movies.map(movie => (
+                    <div key={movie.id} className="col">
+                      <div className="card_container card h-100 border border-0">
+                        <img className="img-fluid h-100" src={`https://image.tmdb.org/t/p/w342${movie.poster_path ? movie.poster_path : '/vFK3Ue8zAXpoWEqncKk5rcGd7RK.jpg'}`} alt="" />
+                        <div onMouseEnter={() => handleMovieDetails(movie.id)} className="overlay">
+                          <ul className="list-unstyled">
+                            <li><strong>Titolo: </strong>{movie.title}</li>
+                            <li><strong>Titolo originale: </strong>{movie.original_title}</li>
+                            <li><strong>Lingua: </strong><span className={`fi fi-${movie.original_language}`}></span></li>
+                            <li><strong>Voto: </strong>{getStarsVote(movie.vote_average).map((star, index) => (
+                              <i key={`star-${index}`} className={star}></i>))}
+                            </li>
+                            <li><strong>{actors.length ? "Actors: " : ''}</strong>{actors.length ? actors.join(', ') : ''}</li>
+                            <li><strong>Overview: </strong>{movie.overview}</li>
+                            <li><strong>{genres.length ? "Genres: " : ''}</strong>{genres.length ? genres.join(', ') : ''}</li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
-              }
-            </div>
-          )}
+                  ))
+                }
+              </div>
+            )
+          }
 
-          <h2>TV Series</h2>
-          {(series.length > 0) && (
-            <div className="row row-cols-4 g-3 pb-5">
-              {
-                series.map(serie => (
-                  <div key={serie.id} className="col">
-                    <div className="card_container card h-100 border border-0">
-                      <img className="img-fluid h-100" src={`https://image.tmdb.org/t/p/w342${serie.poster_path ? serie.poster_path : '/vFK3Ue8zAXpoWEqncKk5rcGd7RK.jpg'}`} alt="" />
-                      <div className="overlay">
-                        <ul className="list-unstyled">
-                          <li><strong>Nome: </strong>{serie.name}</li>
-                          <li><strong>Nome originale: </strong>{serie.original_name}</li>
-                          <li><strong>Lingua: </strong><span className={`fi fi-${serie.original_language}`}></span></li>
-                          <li><strong>Voto: </strong>{getStarsVote(serie.vote_average).map((star, index) => (
-                            <i key={`star-${index}`} className={star}></i>))}
-                          </li>
-                          <li><strong>Overview: </strong>{serie.overview}</li>
-                        </ul>
+          <h2>{movies.length ? ('TV Series') : ('')}</h2>
+          {
+            (series.length > 0) && (
+              <div className="row row-cols-4 g-3 pb-3">
+                {
+                  series.map(serie => (
+                    <div key={serie.id} className="col">
+                      <div className="card_container card h-100 border border-0">
+                        <img className="img-fluid h-100" src={`https://image.tmdb.org/t/p/w342${serie.poster_path ? serie.poster_path : '/vFK3Ue8zAXpoWEqncKk5rcGd7RK.jpg'}`} alt="" />
+                        <div onMouseEnter={() => handleSerieDetails(serie.id)} className="overlay">
+                          <ul className="list-unstyled">
+                            <li><strong>Nome: </strong>{serie.name}</li>
+                            <li><strong>Nome originale: </strong>{serie.original_name}</li>
+                            <li><strong>Lingua: </strong><span className={`fi fi-${serie.original_language}`}></span></li>
+                            <li><strong>Voto: </strong>{getStarsVote(serie.vote_average).map((star, index) => (
+                              <i key={`star-${index}`} className={star}></i>))}
+                            </li>
+                            <li><strong>{actors.length ? "Actors: " : ''}</strong>{actors.length ? actors.join(', ') : ''}</li>
+                            <li><strong>Overview: </strong>{serie.overview}</li>
+                            <li><strong>{genres.length ? "Genres: " : ''}</strong>{genres.length ? genres.join(', ') : ''}</li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
-              }
-            </div>
-          )}
+                  ))
+                }
+              </div>
+            )
+          }
 
         </div >
       </main >

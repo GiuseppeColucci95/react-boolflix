@@ -11,6 +11,8 @@ function MoviesProvider({ children }) {
   const [language, setLanguage] = useState('en-US');
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
+  const [actors, setActors] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   //variables to use
   const api_key = import.meta.env.VITE_MOVIE_DB_API_KEY;
@@ -40,12 +42,106 @@ function MoviesProvider({ children }) {
       .catch(err => console.error(err));
   }
 
+  //function to return cast for a movie
+  function getMovieActors(id) {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwN2JlZDVmZDM4NWFjY2Q5Zjg2OGQzNmYxNzZkNWJhNyIsIm5iZiI6MTc0Mzc1NTkwMy45MzEsInN1YiI6IjY3ZWY5YTdmY2JkNTViNjYxZmQ5MjFlNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8zL-Zef1BbD31v3fS3Rg8SerMdOPkxQZJnT-aIQzGzY'
+      }
+    };
+
+    fetch(`https://api.themoviedb.org/3/movie/${id}/credits?language=${language}`, options)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.cast.slice(0, 5));
+
+        const actorsToSet = data.cast.slice(0, 5);
+        const actorsNames = actorsToSet.map(actor => actor.name);
+
+        setActors(actorsNames);
+      })
+      .catch(err => console.error(err));
+  }
+
+  //function to return genres for a movie
+  function getMovieGenres(id) {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwN2JlZDVmZDM4NWFjY2Q5Zjg2OGQzNmYxNzZkNWJhNyIsIm5iZiI6MTc0Mzc1NTkwMy45MzEsInN1YiI6IjY3ZWY5YTdmY2JkNTViNjYxZmQ5MjFlNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8zL-Zef1BbD31v3fS3Rg8SerMdOPkxQZJnT-aIQzGzY'
+      }
+    };
+
+    fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.genres);
+
+        const genresToSet = data.genres;
+        const genresNames = genresToSet.map(genre => genre.name);
+
+        setGenres(genresNames);
+      })
+      .catch(err => console.error(err));
+  }
+
+  //function to return cast for a serie
+  function getSerieActors(id) {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwN2JlZDVmZDM4NWFjY2Q5Zjg2OGQzNmYxNzZkNWJhNyIsIm5iZiI6MTc0Mzc1NTkwMy45MzEsInN1YiI6IjY3ZWY5YTdmY2JkNTViNjYxZmQ5MjFlNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8zL-Zef1BbD31v3fS3Rg8SerMdOPkxQZJnT-aIQzGzY'
+      }
+    };
+
+    fetch(`https://api.themoviedb.org/3/tv/${id}/credits?language=${language}`, options)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.cast.slice(0, 5));
+
+        const actorsToSet = data.cast.slice(0, 5);
+        const actorsNames = actorsToSet.map(actor => actor.name);
+
+        setActors(actorsNames);
+      })
+      .catch(err => console.error(err));
+  }
+
+  //function to return genres for a serie
+  function getSerieGenres(id) {
+
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwN2JlZDVmZDM4NWFjY2Q5Zjg2OGQzNmYxNzZkNWJhNyIsIm5iZiI6MTc0Mzc1NTkwMy45MzEsInN1YiI6IjY3ZWY5YTdmY2JkNTViNjYxZmQ5MjFlNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8zL-Zef1BbD31v3fS3Rg8SerMdOPkxQZJnT-aIQzGzY'
+      }
+    };
+
+    fetch(`https://api.themoviedb.org/3/tv/${id}?language=en-US`, options)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.genres);
+
+        const genresToSet = data.genres;
+        const genresNames = genresToSet.map(genre => genre.name);
+
+        setGenres(genresNames);
+      })
+      .catch(err => console.error(err));
+  }
+
   return (
-    <MoviesContext.Provider value={{ movies, series, language, setLanguage, searchText, setSearchText, handleSubmit }}>
+    <MoviesContext.Provider value={{ movies, series, language, setLanguage, searchText, setSearchText, handleSubmit, actors, genres, getMovieActors, getMovieGenres, getSerieActors, getSerieGenres }}>
       {children}
     </MoviesContext.Provider>
   );
 }
+
 
 //function to use custom provider
 function useMoviesContext() {

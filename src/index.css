@@ -14,7 +14,6 @@
   width: 15%;
 }
 
-
 /* BODY */
 body {
   font-family: 'Roboto', sans-serif;
@@ -60,9 +59,18 @@ main {
 
       ul {
 
-        i {
-          color: var(--bool-main-color);
+        li {
+
+          strong {
+            font-weight: bolder;
+            color: var(--bool-main-color);
+          }
+
+          i {
+            color: var(--bool-main-color);
+          }
         }
+
       }
     }
   }
