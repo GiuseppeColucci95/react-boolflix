@@ -1,2 +1,34 @@
 @import 'bootstrap';
 @import "/node_modules/flag-icons/css/flag-icons.min.css";
+@import '@fontsource/roboto';
+
+:root {
+  --bool-header-bg-color: #0c0c0c;
+}
+
+/* UTILITIES */
+.width-15 {
+  width: 15%;
+}
+
+/* BODY */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* HEADER */
+header {
+  background-color: var(--bool-header-bg-color);
+
+  #logo {
+    font-weight: 800;
+    font-size: 3rem;
+  }
+}
+
+/* MAIN */
+main {
+
+  color: white;
+  min-height: 850px;
+}

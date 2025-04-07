@@ -6,7 +6,7 @@ import MoviesPage from "./components/MoviesPage"
 
 export default function App() {
 
-  //return
+  //template
   return (
     <>
       <MoviesProvider>
