@@ -13,11 +13,37 @@ function MoviesProvider({ children }) {
   const [series, setSeries] = useState([]);
   const [actors, setActors] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [genresList, setGenresList] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(0);
 
   //variables to use
   const api_key = import.meta.env.VITE_MOVIE_DB_API_KEY;
   const base_movies_api_url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=${language}&query=${searchText}`;
   const base_series_api_url = `https://api.themoviedb.org/3/search/tv?api_key=${api_key}&language=${language}&query=${searchText}`;
+
+  //useEffect for reading genres
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwN2JlZDVmZDM4NWFjY2Q5Zjg2OGQzNmYxNzZkNWJhNyIsIm5iZiI6MTc0Mzc1NTkwMy45MzEsInN1YiI6IjY3ZWY5YTdmY2JkNTViNjYxZmQ5MjFlNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8zL-Zef1BbD31v3fS3Rg8SerMdOPkxQZJnT-aIQzGzY'
+      }
+    };
+
+    fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options)
+      .then(res => res.json())
+      .then(data => {
+        setGenresList(data.genres);
+        console.log(data.genres);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  //useEffect for searching when selected genre changes
+  useEffect(() => {
+    handleSubmit();
+  }, [selectedGenre]);
 
   //function to fetch datas on button click
   function handleSubmit() {
@@ -26,8 +52,20 @@ function MoviesProvider({ children }) {
     fetch(base_movies_api_url)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        setMovies(data.results);
+
+        if (selectedGenre !== 0) {
+
+          const moviesToFilter = data.results;
+          const filteredMovies = moviesToFilter.filter(movie => {
+            console.log("ids: ", movie.genre_ids, "id: ", selectedGenre);
+            return movie.genre_ids.includes(selectedGenre);
+          })
+          setMovies(filteredMovies);
+          console.log(filteredMovies);
+        } else {
+          setMovies(data.results);
+          console.log(data.results);
+        }
       })
       .catch(err => console.error(err));
 
@@ -136,7 +174,7 @@ function MoviesProvider({ children }) {
   }
 
   return (
-    <MoviesContext.Provider value={{ movies, series, language, setLanguage, searchText, setSearchText, handleSubmit, actors, genres, getMovieActors, getMovieGenres, getSerieActors, getSerieGenres }}>
+    <MoviesContext.Provider value={{ movies, series, language, setLanguage, searchText, setSearchText, handleSubmit, actors, genres, getMovieActors, getMovieGenres, getSerieActors, getSerieGenres, genresList, setSelectedGenre }}>
       {children}
     </MoviesContext.Provider>
   );

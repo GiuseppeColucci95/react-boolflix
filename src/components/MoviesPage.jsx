@@ -6,7 +6,10 @@ import Logo from '../assets/img/boolflix-logo.png';
 export default function MoviesPage() {
 
   //logic
-  const { series, movies, language, setLanguage, searchText, setSearchText, handleSubmit, actors, genres, getMovieActors, getMovieGenres, getSerieActors, getSerieGenres } = useMoviesContext();
+  const { series, movies, language, setLanguage, searchText,
+    setSearchText, handleSubmit, actors, genres, getMovieActors,
+    getMovieGenres, getSerieActors, getSerieGenres,
+    genresList, setSelectedGenre } = useMoviesContext();
 
   //function to handle change of input
   function handleSearchTextChange(e) {
@@ -52,6 +55,13 @@ export default function MoviesPage() {
     getSerieGenres(id);
   }
 
+  //function to set genre change
+  function handleGenreChange(e) {
+    setSelectedGenre(Number(e.target.value));
+    console.log(e.target.value, Number(e.target.value));
+  }
+
+
   //template
   return (
     <>
@@ -65,7 +75,7 @@ export default function MoviesPage() {
                 name="movie"
                 id="movie"
                 aria-describedby="movieHelper"
-                placeholder="Type your movie here"
+                placeholder="Search your movie here..."
                 value={searchText}
                 onChange={handleSearchTextChange} />
               <button onClick={handleSearch} type="button" className="btn btn-danger">Search</button>
@@ -88,7 +98,17 @@ export default function MoviesPage() {
       <main className="bg-dark">
         <div className="container py-4">
 
-          <h2>{movies.length ? ('Movies') : ('')}</h2>
+          <div className="d-flex justify-content-between">
+            <h2>Movies</h2>
+            <select onChange={(e) => handleGenreChange(e)} className="mb-3" name="genres" id="genres">
+              <option value="0">Select Genre</option>
+              {
+                genresList.map(genre => (
+                  <option key={genre.id} value={genre.id}>{genre.name}</option>
+                ))
+              }
+            </select>
+          </div>
           {
             (movies.length > 0) && (
               <div className="row row-cols-4 g-3 pb-5">
@@ -118,8 +138,17 @@ export default function MoviesPage() {
             )
           }
 
-          <h2>{movies.length ? ('TV Series') : ('')}</h2>
-          {
+          <div className="d-flex justify-content-between">
+            <h2>TV Series</h2>
+            <select onChange={(e) => handleGenreChange(e)} className="mb-3" name="genres" id="genres">
+              <option value="0">Select Genre</option>
+              {
+                genresList.map(genre => (
+                  <option key={genre.id} value={genre.id}>{genre.name}</option>
+                ))
+              }
+            </select>
+          </div>          {
             (series.length > 0) && (
               <div className="row row-cols-4 g-3 pb-3">
                 {
