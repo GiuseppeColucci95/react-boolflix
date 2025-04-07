@@ -74,7 +74,6 @@ export default function MoviesPage() {
       </header>
 
       <main className="bg-dark">
-
         <div className="container py-4">
 
           <h2>Movies</h2>
@@ -83,17 +82,19 @@ export default function MoviesPage() {
               {
                 movies.map(movie => (
                   <div key={movie.id} className="col">
-                    <div className="card h-100 border border-0">
-                      <img className="img-fluid h-100 rounded" src={`https://image.tmdb.org/t/p/w342${movie.poster_path ? movie.poster_path : '/vFK3Ue8zAXpoWEqncKk5rcGd7RK.jpg'}`} alt="" />
-                      {/* <ul className="m-0 p-0 list-unstyled">
-                        <li>{`Titolo: ${movie.title}`}</li>
-                        <li>{`Titolo originale: ${movie.original_title}`}</li>
-                        <li>{`Lingua: `}<span className={`fi fi-${movie.original_language}`}></span></li>
-                        <li>
-                          {`Voto: `}{getStarsVote(movie.vote_average).map((star, index) => (
+                    <div className="card_container card h-100 border border-0">
+                      <img className="img-fluid h-100" src={`https://image.tmdb.org/t/p/w342${movie.poster_path ? movie.poster_path : '/vFK3Ue8zAXpoWEqncKk5rcGd7RK.jpg'}`} alt="" />
+                      <div className="overlay">
+                        <ul className="list-unstyled">
+                          <li><strong>Titolo: </strong>{movie.title}</li>
+                          <li><strong>Titolo originale: </strong>{movie.original_title}</li>
+                          <li><strong>Lingua: </strong><span className={`fi fi-${movie.original_language}`}></span></li>
+                          <li><strong>Voto: </strong>{getStarsVote(movie.vote_average).map((star, index) => (
                             <i key={`star-${index}`} className={star}></i>))}
-                        </li>
-                      </ul> */}
+                          </li>
+                          <li><strong>Overview: </strong>{movie.overview}</li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 ))
@@ -103,21 +104,23 @@ export default function MoviesPage() {
 
           <h2>TV Series</h2>
           {(series.length > 0) && (
-            <div className="row row-cols-3">
+            <div className="row row-cols-4 g-3 pb-5">
               {
                 series.map(serie => (
                   <div key={serie.id} className="col">
-                    <div className="card mb-2 p-2">
-                      <img className="card-img-top img-fluid" src={`https://image.tmdb.org/t/p/w342${serie.poster_path ? serie.poster_path : '/vFK3Ue8zAXpoWEqncKk5rcGd7RK.jpg'}`} alt="" />
-                      <ul className="m-0 p-0 list-unstyled">
-                        <li>{`Nome: ${serie.name}`}</li>
-                        <li>{`Nome originale: ${serie.original_name}`}</li>
-                        <li>{`Lingua: `}<span className={`fi fi-${serie.original_language}`}></span></li>
-                        <li>
-                          {`Voto: `}{getStarsVote(serie.vote_average).map((star, index) => (
+                    <div className="card_container card h-100 border border-0">
+                      <img className="img-fluid h-100" src={`https://image.tmdb.org/t/p/w342${serie.poster_path ? serie.poster_path : '/vFK3Ue8zAXpoWEqncKk5rcGd7RK.jpg'}`} alt="" />
+                      <div className="overlay">
+                        <ul className="list-unstyled">
+                          <li><strong>Nome: </strong>{serie.name}</li>
+                          <li><strong>Nome originale: </strong>{serie.original_name}</li>
+                          <li><strong>Lingua: </strong><span className={`fi fi-${serie.original_language}`}></span></li>
+                          <li><strong>Voto: </strong>{getStarsVote(serie.vote_average).map((star, index) => (
                             <i key={`star-${index}`} className={star}></i>))}
-                        </li>
-                      </ul>
+                          </li>
+                          <li><strong>Overview: </strong>{serie.overview}</li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 ))
@@ -126,7 +129,6 @@ export default function MoviesPage() {
           )}
 
         </div >
-
       </main >
 
     </>

@@ -4,12 +4,16 @@
 
 :root {
   --bool-header-bg-color: #0c0c0c;
+  --bool-lightest-color: white;
+  --bool-card-bg-hover-color: black;
+  --bool-main-color: #e50914;
 }
 
 /* UTILITIES */
 .width-15 {
   width: 15%;
 }
+
 
 /* BODY */
 body {
@@ -29,6 +33,37 @@ header {
 /* MAIN */
 main {
 
-  color: white;
+  color: var(--bool-lightest-color);
   min-height: 850px;
+
+  .card_container {
+    position: relative;
+
+    &.card_container:hover .overlay {
+      opacity: 1;
+      cursor: pointer;
+    }
+
+    .overlay {
+      color: var(--bool-lightest-color);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+
+      opacity: 0;
+      transition: 0.5s ease;
+      background-color: var(--bool-card-bg-hover-color);
+      overflow-y: auto;
+
+      ul {
+
+        i {
+          color: var(--bool-main-color);
+        }
+      }
+    }
+  }
 }
